@@ -1,0 +1,44 @@
+quarkus:
+  log:
+    level: INFO
+  hibernate-orm:
+    database:
+      #generation: drop-and-create
+      generation: update
+    log:
+      sql: true
+    dialect: org.hibernate.dialect.PostgreSQL10Dialect
+    jdbc:
+      timezone: UTC
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: postgres
+    jdbc: false
+    reactive:
+      url: postgresql://localhost:5432/erickdiaz
+      max-size: 20
+  
+  kafka-streams:
+    bootstrap-servers: localhost:9092
+
+mp:
+  messaging:
+    outgoing:
+      product-list:
+        connector: smallrye-kafka 
+        topic:
+          products
+        key:
+          serializer: org.apache.kafka.common.serialization.LongSerializer
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+      item-cart:
+        connector: smallrye-kafka
+        topic:
+          items
+        key:
+          serializer: org.apache.kafka.common.serialization.LongSerializer
+        value:
+          serializer: io.quarkus.kafka.client.serialization.ObjectMapperSerializer
+    
